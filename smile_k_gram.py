@@ -56,7 +56,7 @@ def k_gram_save(data_file, k, save_name):
         data_list = f.read().strip().split('\n')
 
     N = len(data_list)
-    print("drugs----数据集大小", N)
+    print("drugs----dataset_size: ", N)
     smiles = []
     all = 0
     num = 0
@@ -80,9 +80,9 @@ def k_gram_save(data_file, k, save_name):
         num_max = max(max(lis), num_max)
 
         smiles.append(lis)
-    print("平均长度:", all / num)
-    print("最大长度:", max_len)
-    print("分成不同种类数:", num_max)
+    print("len_avg: ", all / num)
+    print("len_max: ", max_len)
+    print("num_max: ", num_max)
 
     print(np.array(smiles).shape)
 
