@@ -57,11 +57,11 @@ def Cluster(sim,th,js,k):
                     SR_j_copy[i][j] = 1
         SR_j_clu = SR_j_copy[indices]
         SR_j_temp = np.sum(SR_j_clu, axis=0)
+        result = [item for sublist in cluster for item in sublist]
+        result = np.array(result)
         for k in unkown:
             if SR_j_temp[k] > 1:
                 unkown_neigh = np.where(SR_old[k] == 1)[0]
-                result = [item for sublist in cluster for item in sublist]
-                result = np.array(result)
                 intersection = np.intersect1d(unkown_neigh, result)
                 col = sim[:, k]
                 col_new = col[intersection]
