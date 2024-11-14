@@ -22,6 +22,6 @@ NEGCDTI: Neighborhood-Enhanced Graph Contrastive Learning for Drug-Target Intera
 1. `Data` stores four datasets.
 2. `smile_to_features.py` generates chemical text information. 
 3. `smiles_k_gram.py` lets the chemical text be divided into words according to the k-gram method. 
-4. `protein_k_gram` lets the protein sequences be divided into words according to the k-gram method. 
+4. `protein_k_gram.py` lets the protein sequences be divided into words according to the k-gram method. 
 5. `cluster.py` stores the neighborhood-enhanced graph contrastive learning algorithm.
 6. `main.py` trains NEGCDTI model.
