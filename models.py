@@ -222,9 +222,11 @@ class NEGCDTI(nn.Module):
         self.relu = nn.ReLU()
     
     def forward(self,smiles_feature,pro_feature,G,drug_num,target_num):
+        # Transformer-based Sequence Information Extraction
         H = self.encoder(smiles_feature, pro_feature)
         H = self.relu(H)
         H = F.dropout(H, self.dropout, training=True)
+        # GCN-based Network Information Extraction
         H = self.gc1(H,G)
         H = self.relu(H)
         H = F.dropout(H, self.dropout, training=True)
@@ -233,6 +235,7 @@ class NEGCDTI(nn.Module):
         H = F.dropout(H, self.dropout, training=True)
         H = self.gc3(H,G)
         H = self.relu(H)
+        # DTI Prediction
         decoder = self.decoder(H,drug_num,target_num)        
         
         return decoder, H
