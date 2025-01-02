@@ -36,6 +36,7 @@ For a new dataset, you need to prepare the following files:
 3. dti_mat.xlsx: This file stores the interaction information between drugs and targets.
 4. drug_affinity_mat.txt and target_affinity_mat.txt: These files should be generated using the method described in our paper. They store the similarity information 
    of drugs and targets, respectively.
+   
 Next, you need to run the following scripts:
 1. Run smile_to_features.py to extract chemical textual features from the drug SMILES sequences.
 2. Run smiles_k_gram.py to obtain the drug representations.
