@@ -3,6 +3,7 @@ import copy
 
 
 def Cluster(sim,th,js,k):
+    # Division of cluster centers and points to be assigned
     SR_old = np.where(sim >= th, 1, 0)
     SR_old = SR_old.astype(float)
     SR_d = np.sum(SR_old, axis=1)
@@ -14,6 +15,7 @@ def Cluster(sim,th,js,k):
     for i in range(SR_D.shape[0]):
         if SR_D[i, i] > threshold:
             indices.append(i)
+    # Assign first-order neighbors
     SR_core = SR_old[indices]
     SR_temp = np.sum(SR_core, axis=0)
     ind = np.where(SR_temp > 1)[0].tolist()
@@ -47,6 +49,7 @@ def Cluster(sim,th,js,k):
     n = 0
     SR_j = SR_old.copy()
     qc_temp = []
+    # Assign higher-order neighbors
     while n < js:
         SR_j = SR_j @ SR_old
         np.fill_diagonal(SR_j, 0)
@@ -84,7 +87,7 @@ def Cluster(sim,th,js,k):
         unkown = new_unkown
         qc_temp = []
         n = n + 1
-
+    # Assign outliers
     if len(unkown) != 0:
         for k in unkown:
             col = sim[:, k]
