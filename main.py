@@ -23,6 +23,7 @@ os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
 
 
 if __name__=="__main__":
+    # Read hyperparameters
     config = get_config()
     root_path = config.root_path_topofallfeature
     dataset = config.dataset_topofallfeature
@@ -75,12 +76,15 @@ if __name__=="__main__":
     drug_dissimmat = get_drug_dissimmat(SR,topk = topk).astype(int)
     negtive_index_arr = np.where(A_orig_arr==0)[0]
     negative_index = torch.LongTensor(negtive_index_arr)
+    # Obtain Gaussian similarity
     drug_gau = get_gaussian(A_orig)
     tar_gau = get_gaussian(A_orig.T)
     np.fill_diagonal(drug_gau, 0)
     np.fill_diagonal(tar_gau, 0)
+    # Perform Neighborhood-based Graph Clustering
     cluster_drugs, indices_drugs = Cluster(drug_gau, thd, jsd, kd)
     cluster_targets, indices_targets = Cluster(tar_gau, tht, jst, kt)
+    # Obtain drug and target representations
     train_smile_name = "Data/" + dataset + "/drugs_smiles_" + str(1) + "_gram.npy"
     train_pro_name = "Data/" + dataset + "/target_" + str(1) + "_gram.npy"
     smiles_feature, pro_feature = data_loader(train_smile_name, train_pro_name)
@@ -144,6 +148,7 @@ if __name__=="__main__":
             nega_score = torch.sigmoid(nega_sample)
             drugs_feature = features[0:drug_num]
             targets_feature = features[drug_num:]
+            # Calculate contrastive loss
             drugs_view1 = Cluster_view(drugs_feature, cluster_drugs)
             drugs_view3 = Cluster_core(drugs_feature, cluster_drugs)
             drugs_view2 = drugs_feature[indices_drugs]
@@ -152,7 +157,7 @@ if __name__=="__main__":
             targets_view3 = Cluster_core(targets_feature, cluster_targets)
             targets_view2 = targets_feature[indices_targets]
             targets_cl_loss = InfoNCE(targets_view1, targets_view2, targets_view3, temperature, target_num)
-            # calculate the loss
+            # Calculate final loss
             loss_r = loss_function(train_score,nega_score,drug_num,target_num)
             cl_loss = drugs_cl_loss + targets_cl_loss
             loss = loss_r + xs*cl_loss
